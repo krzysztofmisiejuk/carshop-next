@@ -1,33 +1,33 @@
 {
-  "name": "car_shop",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "clsx": "^2.1.1",
-    "dotenv": "^16.4.7",
-    "next": "15.2.3",
-    "pg": "^8.14.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
-  },
-  "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4.0.14",
-    "@types/node": "^20",
-    "@types/pg": "^8.11.11",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "autoprefixer": "^10.4.21",
-    "eslint": "^9",
-    "eslint-config-next": "15.2.3",
-    "postcss": "^8.5.3",
-    "tailwindcss": "^4.0.14",
-    "typescript": "^5"
-  }
+	"name": "car_shop",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev --turbopack",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint"
+	},
+	"dependencies": {
+		"clsx": "^2.1.1",
+		"dotenv": "^16.4.7",
+		"next": "15.2.3",
+		"pg": "^8.14.1",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0"
+	},
+	"devDependencies": {
+		"@eslint/eslintrc": "^3",
+		"@tailwindcss/postcss": "^4.0.14",
+		"@types/node": "^20",
+		"@types/pg": "^8.11.11",
+		"@types/react": "^19",
+		"@types/react-dom": "^19",
+		"autoprefixer": "^10.4.21",
+		"eslint": "^9",
+		"eslint-config-next": "15.2.3",
+		"postcss": "^8.5.3",
+		"tailwindcss": "^4.0.14",
+		"typescript": "^5"
+	}
 }

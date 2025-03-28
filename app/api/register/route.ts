@@ -4,7 +4,6 @@ import { newUser, User } from "@/types/types";
 export async function POST(req: Request) {
 	try {
 		const { rows: users } = await pool.query<User>('SELECT * FROM public.users');
-		console.log('users', users);
 		const newUser: newUser = await req.json();
 		const isUserExist = users.find(
 			(user) => user.username === newUser.username

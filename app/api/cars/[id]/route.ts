@@ -3,12 +3,13 @@ import { Car } from '@/types/types'
 
 export async function GET(
 	req: Request,
-	{ params }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ) {
 	try {
-		const id = `car${params.id.padStart(3, '0')}`
+		const { id } = await params
+		const formattedId = `${id.padStart(3, '0')}`
 		const result = await pool.query<Car>('SELECT * FROM cars WHERE id = $1', [
-			id,
+			formattedId,
 		])
 		if (result.rows.length < 1) {
 			return Response.json({ error: 'Car not found' }, { status: 404 })
@@ -22,10 +23,11 @@ export async function GET(
 
 export async function DELETE(
 	req: Request,
-	{ params }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ) {
 	try {
-		const formattedId = `car${params.id.padStart(3, '0')}`
+		const { id } = await params
+		const formattedId = `${id.padStart(3, '0')}`
 		const { rows: cars } = await pool.query<Car>(
 			'SELECT * FROM cars WHERE id = $1',
 			[formattedId]

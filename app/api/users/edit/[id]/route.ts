@@ -1,21 +1,19 @@
-import { pool } from '@/lib/db';
-import { EditedUser, User } from '@/types/types';
+import { pool } from '@/lib/db'
+import { EditedUser, User } from '@/types/types'
 
 export async function PUT(
 	req: Request,
-	{ params }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ) {
 	try {
-		const param = await params;
-		const formmattedId = `${param.id.padStart(3, '0')}`;
-		const editedUser: EditedUser = await req.json();
-		const { rows: users } = await pool.query<User>(
-			'SELECT * FROM public.users'
-		);
-		const isUserExist = users.find((user) => user.id === formmattedId);
+		const { id } = await params
+		const formattedId = `${id.padStart(3, '0')}`
+		const editedUser: EditedUser = await req.json()
+		const { rows: users } = await pool.query<User>('SELECT * FROM public.users')
+		const isUserExist = users.find((user) => user.id === formattedId)
 
 		if (!isUserExist) {
-			return Response.json({ error: 'User not found' }, { status: 404 });
+			return Response.json({ error: 'User not found' }, { status: 404 })
 		}
 
 		await pool.query(
@@ -25,15 +23,15 @@ export async function PUT(
 				editedUser.password,
 				editedUser.role,
 				editedUser.balance,
-				formmattedId,
+				formattedId,
 			]
-		);
+		)
 		return Response.json(
 			{ message: 'User edited succesfully' },
 			{ status: 200 }
-		);
+		)
 	} catch (error) {
-		console.error('Błąd DELETE:', error);
-		return Response.json({ error: 'Internal server error' }, { status: 500 });
+		console.error('Błąd DELETE:', error)
+		return Response.json({ error: 'Internal server error' }, { status: 500 })
 	}
 }
