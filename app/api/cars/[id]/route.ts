@@ -2,18 +2,16 @@ import { pool } from '@/lib/db'
 import { Car } from '@/types/types'
 import { NextRequest } from 'next/server'
 
-// Typ dla kontekstu
-interface RouteContext {
-	params: { id: Promise<string> }
-}
-
-export async function GET(req: NextRequest, { params }: RouteContext) {
+export async function GET(
+	req: NextRequest,
+	{ params }: { params: Promise<string> }
+) {
 	try {
-		if (!params?.id) {
+		if (params?.id) {
 			return Response.json({ error: 'ID is required' }, { status: 400 })
 		}
 
-		const id = `car${params.id.padStart(3, '0')}`
+		const id = await `car${params?.id.padStart(3, '0')}`
 		const result = await pool.query<Car>('SELECT * FROM cars WHERE id = $1', [
 			id,
 		])
@@ -29,13 +27,16 @@ export async function GET(req: NextRequest, { params }: RouteContext) {
 	}
 }
 
-export async function DELETE(req: NextRequest, { params }: RouteContext) {
+export async function DELETE(
+	req: NextRequest,
+	{ params }: { params: Promise<string> }
+) {
 	try {
 		if (!params?.id) {
 			return Response.json({ error: 'ID is required' }, { status: 400 })
 		}
 
-		const formattedId = `car${params.id.padStart(3, '0')}`
+		const formattedId = await `car${params.id.padStart(3, '0')}`
 		const { rows: cars } = await pool.query<Car>(
 			'SELECT * FROM cars WHERE id = $1',
 			[formattedId]

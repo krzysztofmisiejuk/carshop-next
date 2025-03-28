@@ -45,7 +45,6 @@ export async function PUT(req: Request) {
 			)
 		}
 		
-
 		if (+car[0].price > +owner[0].balance) {
 			return Response.json(
 				{ error: 'You do not have enough money!' },
