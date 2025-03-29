@@ -29,8 +29,6 @@ async function getInitialUser(): Promise<{ isLoggedIn: boolean; user: Profile | 
   }
 }
 
-// use effect
-
 export default async function RootTemplate({
   children,
 }: {

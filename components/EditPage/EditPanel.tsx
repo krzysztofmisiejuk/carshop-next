@@ -5,10 +5,10 @@ import { InfoPanel, EditForm } from './';
 
 export default function EditPanel({
 	user,
-	onUserUpdate,
+	refreshUser
 }: {
 	user: User;
-	onUserUpdate: () => void;
+	refreshUser: () => void;
 }) {
 	const [isEditMode, setIsEditMode] = useState(false);
 	return (
@@ -17,7 +17,7 @@ export default function EditPanel({
 				<EditForm
 					user={user}
 					setIsEditMode={setIsEditMode}
-					onUserUpdate={onUserUpdate}
+					refreshUser={refreshUser}
 				/>
 			) : (
 				<InfoPanel

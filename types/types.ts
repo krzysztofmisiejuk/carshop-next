@@ -51,7 +51,6 @@ export type ButtonProps = {
 	type?: 'submit' | 'reset' | 'button' | undefined;
 	text: string;
 	onClickFn?: () => void | undefined;
-	'data-user-id'?: string;
 };
 
 export type InputTypes = {

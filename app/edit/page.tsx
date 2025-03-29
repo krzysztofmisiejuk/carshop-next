@@ -8,7 +8,7 @@ import { redirect } from 'next/navigation'
 export default function Edit() {
 	const [usersList, setUsersList] = useState<User[]>([])
 	const [isLoading, setIsLoading] = useState<boolean>(false)
-	const { loggedUser } = useContext(LoginContext)
+	const { loggedUser, setLoggedUser } = useContext(LoginContext)
 	useEffect(() => {
 		getUsers()
 		return () => {}
@@ -29,6 +29,24 @@ export default function Edit() {
 			setUsersList([])
 		} finally {
 			setIsLoading(false)
+		}
+	}
+
+	async function refreshUser() {
+		try {
+			const response = await fetch('http://localhost:3000/api/login', {
+				credentials: 'include',
+			})
+			if (!response.ok) return
+
+			const data = await response.json()
+			setLoggedUser({
+				username: data.data.username,
+				role: data.data.role,
+				balance: data.data.balance,
+			})
+		} catch (error) {
+			console.error('Error refreshing user data:', error)
 		}
 	}
 
@@ -53,7 +71,7 @@ export default function Edit() {
 					<EditPanel
 						key={user.id}
 						user={user}
-						onUserUpdate={getUsers}
+						refreshUser={refreshUser}
 					/>
 				)
 			})}

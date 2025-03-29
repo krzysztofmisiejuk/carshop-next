@@ -1,4 +1,3 @@
-'use server';
 import { generateToken, getUserFromToken } from '@/lib/auth';
 import { pool } from '@/lib/db';
 import { newUser, User } from '@/types/types';

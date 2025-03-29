@@ -1,26 +1,26 @@
-'use client';
-import { User } from '@/types/types';
-import { useContext, useState } from 'react';
-import { MessageContext } from '@/contexts';
-import { Button, Form, Input } from '../index';
+'use client'
+import { User } from '@/types/types'
+import { useContext, useState } from 'react'
+import { MessageContext } from '@/contexts'
+import { Button, Form, Input } from '../index'
 
 export default function EditForm({
 	user,
 	setIsEditMode,
-	onUserUpdate,
+	refreshUser,
 }: {
-	user: User;
-	setIsEditMode: React.Dispatch<React.SetStateAction<boolean>>;
-	onUserUpdate: () => void;
+	user: User
+	setIsEditMode: React.Dispatch<React.SetStateAction<boolean>>
+	refreshUser: () => void
 }) {
-	const [, setMessage] = useContext(MessageContext);
-	const [newUsername, setNewUsername] = useState<string>('');
-	const [newPassword, setNewPassword] = useState<string>('');
-	const [newBalance, setNewBalance] = useState<string>('');
-	const [newRole, setNewRole] = useState<string>('');
+	const [, setMessage] = useContext(MessageContext)
+	const [newUsername, setNewUsername] = useState<string>('')
+	const [newPassword, setNewPassword] = useState<string>('')
+	const [newBalance, setNewBalance] = useState<string>('')
+	const [newRole, setNewRole] = useState<string>('')
 
 	async function handeSubmit(e: React.FormEvent<HTMLFormElement>) {
-		e.preventDefault();
+		e.preventDefault()
 		try {
 			const response = await fetch(
 				`http://localhost:3000/api/users/edit/${user.id}`,
@@ -34,23 +34,23 @@ export default function EditForm({
 						balance: newBalance,
 					}),
 				}
-			);
-			const data = await response.json();
+			)
+			const data = await response.json()
 			if (response.ok) {
 				setMessage({
 					text: data.message,
 					type: 'success',
-				});
-				setIsEditMode(false);
-				onUserUpdate(); // Call the update function
+				})
+				setIsEditMode(false)
+				refreshUser()
 			} else {
 				setMessage({
 					text: data.error,
 					type: 'error',
-				});
+				})
 			}
 		} catch (error) {
-			console.error('Bład: ', error);
+			console.error('Bład: ', error)
 		}
 	}
 
@@ -80,7 +80,7 @@ export default function EditForm({
 				className='my-1 p-2 border text-sm rounded'
 				value={newRole}
 				onChange={(e) => {
-					setNewRole(e.target.value);
+					setNewRole(e.target.value)
 				}}
 				required
 			>
@@ -100,5 +100,5 @@ export default function EditForm({
 				onClickFn={() => setIsEditMode(false)}
 			/>
 		</Form>
-	);
+	)
 }
