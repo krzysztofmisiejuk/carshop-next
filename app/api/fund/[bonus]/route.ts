@@ -1,7 +1,7 @@
-import { getUserFromToken } from '@/lib/auth'
-import { pool } from '@/lib/db'
-import { User } from '@/types/types'
 import { cookies } from 'next/headers'
+import { getUserFromToken } from '@/app/lib/auth'
+import { pool } from '@/app/lib/db'
+import { User } from '@/app/types/types'
 
 export async function GET(
 	req: Request,

@@ -1,5 +1,5 @@
 'use client'
-import { ButtonProps } from '@/types/types'
+import { ButtonProps } from '@/app/types/types'
 
 export default function Button(props: ButtonProps) {
 	return (

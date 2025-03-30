@@ -1,5 +1,5 @@
-import { pool } from '@/lib/db'
-import { EditedUser, User } from '@/types/types'
+import { pool } from '@/app/lib/db'
+import { EditedUser, User } from '@/app/types/types'
 
 export async function PUT(
 	req: Request,

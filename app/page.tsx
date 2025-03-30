@@ -1,10 +1,10 @@
-import { PageHeader } from "@/components";
+import { PageHeader } from '@/components'
 
-export default function Home() {
+export default async function Home() {
 	return (
 		<>
-			<PageHeader headerContent={"Witamy w Car Shop!"}/>
-			<p className="my-3">Wybierz opcję z menu.</p>
+			<PageHeader headerContent={'Witamy w Car Shop!'} />
+			<p className='my-3'>Wybierz opcję z menu.</p>
 		</>
-	);
+	)
 }

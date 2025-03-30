@@ -1,11 +1,15 @@
-import { Nav } from '../Nav';
+import { Profile } from '@/app/types/types'
+import { Nav } from '../Nav'
 
-export default function Header() {
-
+export default function Header({
+	dataUser,
+}: {
+	dataUser: { data: Profile } | null
+}) {
 	return (
 		<div className='p-2.5 bg-custom-dark-gray text-white'>
 			<h1 className='font-bold text-main-header-size'>Car Shop</h1>
-			<Nav/>
+			<Nav dataUser={dataUser} />
 		</div>
-	);
+	)
 }

@@ -1,13 +1,13 @@
-import { User } from '@/types/types';
-import Button from '../Button/Button';
-import SingleProperty from '../SingleProperty/SingleProperty';
+import { User } from '@/app/types/types'
+import Button from '../Button/Button'
+import SingleProperty from '../SingleProperty/SingleProperty'
 
 export default function InfoPanel({
 	user,
 	setIsEditMode,
 }: {
-	user: User;
-	setIsEditMode: React.Dispatch<React.SetStateAction<boolean>>;
+	user: User
+	setIsEditMode: React.Dispatch<React.SetStateAction<boolean>>
 }) {
 	return (
 		<div className='flex items-center'>
@@ -37,5 +37,5 @@ export default function InfoPanel({
 				value={`${user.balance}`}
 			/>
 		</div>
-	);
+	)
 }

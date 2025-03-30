@@ -1,5 +1,5 @@
 'use client'
-import { InputTypes } from '@/types/types';
+import { InputTypes } from '@/app/types/types'
 
 export default function Input({
 	id,
@@ -17,5 +17,5 @@ export default function Input({
 			required
 			onChange={(e) => onChange(e.currentTarget.value)}
 		/>
-	);
+	)
 }

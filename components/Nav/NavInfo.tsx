@@ -1,17 +1,21 @@
-import { Profile } from '@/types/types';
+import { Profile } from '@/app/types/types'
 
-export default function NavInfo({
-  isLoggedIn,
-  currentUser,
+export default async function NavInfo({
+	isLoggedIn,
+	dataUser,
 }: {
-  isLoggedIn: boolean | string | null;
-  currentUser: Profile | null;
+	isLoggedIn: boolean | string | null
+	dataUser: { data: Profile } | null
 }) {
-  return (
-    <p className="text-sm mt-1">
-      {isLoggedIn
-        ? `Zalogowany jako: ${currentUser?.username} | Rola: ${currentUser?.role} | Saldo: ${currentUser?.balance}`
-        : 'Nie jesteś zalogowany'}
-    </p>
-  );
+	if (!isLoggedIn || !dataUser) {
+		return <p className='text-sm mt-1'>Nie jesteś zalogowany</p>
+	}
+
+	return (
+		<p className='text-sm mt-1'>
+			{isLoggedIn
+				? `Zalogowany jako: ${dataUser.data.username} | Rola: ${dataUser.data.role} | Saldo: ${dataUser.data.balance}`
+				: 'Nie jesteś zalogowany'}
+		</p>
+	)
 }

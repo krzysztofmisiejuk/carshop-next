@@ -1,13 +1,13 @@
-'use client';
-import { LoginContext } from '@/contexts';
-import { NavInfo, NavLoginList, NavLogoutList } from './';
-import { useContext } from 'react';
+import { Profile } from '@/app/types/types'
+import { NavInfo, NavLoginList, NavLogoutList } from '.'
 
-export default function Nav() {
-	const { loggedUser } = useContext(LoginContext);
-  
-	const isAdmin = loggedUser?.role === 'admin';
-	const isLoggedIn = loggedUser !== null;
+export default async function Nav({
+	dataUser,
+}: {
+	dataUser: { data: Profile } | null
+}) {
+	const isAdmin = dataUser?.data.role === 'admin'
+	const isLoggedIn = dataUser !== null
 
 	return (
 		<>
@@ -15,9 +15,9 @@ export default function Nav() {
 				{isLoggedIn ? <NavLoginList isAdmin={isAdmin} /> : <NavLogoutList />}
 			</ul>
 			<NavInfo
-				currentUser={loggedUser}
+				dataUser={dataUser}
 				isLoggedIn={isLoggedIn}
 			/>
 		</>
-	);
+	)
 }

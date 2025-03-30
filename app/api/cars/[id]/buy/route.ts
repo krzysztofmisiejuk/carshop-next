@@ -1,7 +1,8 @@
-import { getUserFromToken } from '@/lib/auth'
-import { pool } from '@/lib/db'
-import { BoughtCar, Car, User } from '@/types/types'
+import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
+import { pool } from '@/app/lib/db'
+import { BoughtCar, Car, User } from '@/app/types/types'
+import { getUserFromToken } from '@/app/lib/auth'
 
 export async function PUT(req: Request) {
 	try {
@@ -44,7 +45,7 @@ export async function PUT(req: Request) {
 				{ status: 400 }
 			)
 		}
-		
+
 		if (+car[0].price > +owner[0].balance) {
 			return Response.json(
 				{ error: 'You do not have enough money!' },
@@ -63,6 +64,8 @@ export async function PUT(req: Request) {
 			'UPDATE public.cars SET owner_Id = $1  WHERE id = $2',
 			[owner[0].id, bougthCar.carId]
 		)
+		revalidatePath('/')
+		revalidatePath('/profile')
 
 		return Response.json({ message: 'Purchase succesfully' }, { status: 200 })
 	} catch (error) {

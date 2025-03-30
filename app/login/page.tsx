@@ -1,16 +1,11 @@
 'use client'
-import { Button, Form, Input, PageHeader } from '@/components'
-import { LoginContext } from '@/contexts/LoginContext'
-import { MessageContext } from '@/contexts/MessageContext'
 import { useRouter } from 'next/navigation'
-import { useState, useContext } from 'react'
-import { Profile } from '@/types/types'
+import { useState } from 'react'
+import { Button, Form, Input, PageHeader } from '@/components'
 
 export default function Login() {
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
-	const [, setMessage] = useContext(MessageContext)
-	const { setLoggedUser } = useContext(LoginContext)
 	const router = useRouter()
 
 	async function handleLogin() {
@@ -19,20 +14,12 @@ export default function Login() {
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ username, password }),
 			credentials: 'include',
+			cache: 'no-store',
 		})
-		const data = await response.json()
+
 		if (response.ok) {
-			const user: Profile = {
-				username: data.data.username,
-				role: data.data.role,
-				balance: data.data.balance,
-			}
-			setLoggedUser(user)
-			setMessage({ text: data.message, type: 'success' })
 			router.push('/')
 			router.refresh()
-		} else {
-			setMessage({ text: data.error, type: 'error' })
 		}
 	}
 
@@ -42,7 +29,6 @@ export default function Login() {
 			await handleLogin()
 		} catch (error) {
 			console.error('Błąd:', error)
-			setMessage({ text: 'Wystąpił błąd', type: 'error' })
 		}
 	}
 

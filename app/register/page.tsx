@@ -1,31 +1,26 @@
-'use client';
-import { Button, Form, Input, PageHeader } from '@/components';
-import { useContext, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { MessageContext } from '@/contexts/MessageContext';
+'use client'
+import { Button, Form, Input, PageHeader } from '@/components'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+
 export default function Register() {
-	const [username, setUsername] = useState('');
-	const [password, setPassword] = useState('');
-	const [, setMessage] = useContext(MessageContext);
-	const router = useRouter();
+	const [username, setUsername] = useState('')
+	const [password, setPassword] = useState('')
+	const router = useRouter()
 
 	async function handleSubmit(e: React.FormEvent) {
-		e.preventDefault();
+		e.preventDefault()
 		try {
 			const response = await fetch('http://localhost:3000/api/register', {
 				method: 'POST',
 				headers: { 'Content-type': 'application/json' },
 				body: JSON.stringify({ username, password }),
-			});
-			const data = await response.json();
+			})
 			if (response.ok) {
-				setMessage({ text: data.message, type: 'success' });
-				router.push('/login');
-			} else {
-				setMessage({ text: data.error, type: 'error' });
+				router.push('/login')
 			}
 		} catch (error) {
-			console.error('Błąd:', error);
+			console.error('Błąd:', error)
 		}
 	}
 
@@ -47,5 +42,5 @@ export default function Register() {
 				<Button text='Zarejestruj' />
 			</Form>
 		</>
-	);
+	)
 }

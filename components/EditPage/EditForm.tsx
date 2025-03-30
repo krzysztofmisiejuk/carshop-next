@@ -1,24 +1,22 @@
 'use client'
-import { User } from '@/types/types'
-import { useContext, useState } from 'react'
-import { MessageContext } from '@/contexts'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button, Form, Input } from '../index'
+import { User } from '@/app/types/types'
 
 export default function EditForm({
 	user,
 	setIsEditMode,
-	refreshUser,
 }: {
 	user: User
 	setIsEditMode: React.Dispatch<React.SetStateAction<boolean>>
-	refreshUser: () => void
 }) {
-	const [, setMessage] = useContext(MessageContext)
 	const [newUsername, setNewUsername] = useState<string>('')
 	const [newPassword, setNewPassword] = useState<string>('')
 	const [newBalance, setNewBalance] = useState<string>('')
 	const [newRole, setNewRole] = useState<string>('')
-
+	const router = useRouter()
+	
 	async function handeSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault()
 		try {
@@ -35,19 +33,9 @@ export default function EditForm({
 					}),
 				}
 			)
-			const data = await response.json()
 			if (response.ok) {
-				setMessage({
-					text: data.message,
-					type: 'success',
-				})
 				setIsEditMode(false)
-				refreshUser()
-			} else {
-				setMessage({
-					text: data.error,
-					type: 'error',
-				})
+				router.refresh()
 			}
 		} catch (error) {
 			console.error('Bład: ', error)
@@ -97,7 +85,11 @@ export default function EditForm({
 			<Button
 				type='button'
 				text='Anuluj'
-				onClickFn={() => setIsEditMode(false)}
+				onClickFn={() => {
+					setIsEditMode(false)
+					router.push('/edit')
+					router.refresh()
+				}}
 			/>
 		</Form>
 	)

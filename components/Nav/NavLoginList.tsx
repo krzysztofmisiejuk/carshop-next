@@ -1,63 +1,52 @@
-'use client';
-import { useContext } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { MessageContext } from '@/contexts/MessageContext';
-import { LoginContext } from '@/contexts/LoginContext';
+'use client'
+import { useRouter } from 'next/navigation'
+import CustomLink from '../CustomLink/CustomLink'
 
 export default function NavLoginList({ isAdmin }: { isAdmin: boolean }) {
-  const [, setMessage] = useContext(MessageContext);
-  const { setLoggedUser,  } = useContext(LoginContext);
-  const router = useRouter();
+	const router = useRouter()
 
-  async function handleLogout() {
-    const response = await fetch('/api/logout', {
-      method: 'GET',
-      credentials: 'include',
-    });
-    if (response.ok) {
-      setLoggedUser(null);
-      // setIsLoggedIn(false);
-      setMessage({ text: 'Wylogowano pomyślnie', type: 'success' });
-      router.push('/login');
-      router.refresh();
-    } else {
-      setMessage({ text: 'Błąd podczas wylogowania', type: 'error' });
-    }
-  }
+	async function handleLogout() {
+		const response = await fetch('/api/logout', {
+			method: 'GET',
+			credentials: 'include',
+		})
+		if (response.ok) {
+			router.push('/login')
+			router.refresh()
+		}
+	}
 
-  return (
-    <div className="flex gap-4 w-full">
-      <Link href="/">
-        <li>Home</li>
-      </Link>
-      <Link href="/profile">
-        <li>Profil</li>
-      </Link>
-      <Link href="/cars">
-        <li>Samochody</li>
-      </Link>
-      <Link href="/buy">
-        <li>Kup samochód</li>
-      </Link>
-      <li
-        onClick={async () => {
-          try {
-            await handleLogout();
-          } catch (error) {
-            console.error('Logout error:', error);
-            setMessage({ text: 'Wystąpił błąd', type: 'error' });
-          }
-        }}
-        className="cursor-pointer"
-      >
-        Wyloguj
-      </li>
-      {isAdmin && (
-        <Link href="/edit" className="ml-auto">
-          Lista użytkowników
-        </Link>
-      )}
-    </div>
-  );
+	return (
+		<div className='flex gap-4 w-full'>
+			<CustomLink pathname='/'>
+				<li>Home</li>
+			</CustomLink>
+			<CustomLink pathname='/profile'>
+				<li>Profil</li>
+			</CustomLink>
+			<CustomLink pathname='/cars'>
+				<li>Samochody</li>
+			</CustomLink>
+			<CustomLink pathname='/buy'>
+				<li>Kup samochód</li>
+			</CustomLink>
+			<li
+				onClick={async () => {
+					try {
+						await handleLogout()
+					} catch (error) {
+						console.error('Logout error:', error)
+					}
+				}}
+				className='cursor-pointer'
+			>
+				Wyloguj
+			</li>
+			{isAdmin && (
+				<div className='ml-auto'>
+					<CustomLink pathname='/edit'>Lista użytkowników</CustomLink>
+				</div>
+			)}
+		</div>
+	)
 }

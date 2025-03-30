@@ -1,5 +1,5 @@
-import { pool } from '@/lib/db'
-import { User } from '@/types/types'
+import { pool } from '@/app/lib/db'
+import { User } from '@/app/types/types'
 
 export async function GET(
 	req: Request,
