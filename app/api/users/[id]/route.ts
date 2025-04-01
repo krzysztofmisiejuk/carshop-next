@@ -1,4 +1,4 @@
-import { deleteCar, getCarById, getUserById } from '@/app/lib/prismaActions'
+import {  deleteUser, getUserById } from '@/app/lib/prismaActions'
 
 export async function GET(
 	req: Request,
@@ -29,13 +29,13 @@ export async function DELETE(
 	try {
 		const { id } = await params
 		const formattedId = `user${id.padStart(3, '0')}`
-		const car = await getCarById(formattedId)
+		const car = await getUserById(formattedId)
 
 		if (!car) {
 			return Response.json({ error: 'User not found' }, { status: 404 })
 		}
 
-		await deleteCar(formattedId)
+		await deleteUser(formattedId)
 		return Response.json({ message: 'Delete succesfully' }, { status: 200 })
 	} catch (error) {
 		console.error('Error DELETE:', error)
