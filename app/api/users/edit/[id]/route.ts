@@ -1,5 +1,5 @@
-import { pool } from '@/app/lib/db'
-import { EditedUser, User } from '@/app/types/types'
+import { editUser, getUserById } from '@/app/lib/prismaActions'
+import { EditedUser } from '@/app/types/types'
 
 export async function PUT(
 	req: Request,
@@ -9,29 +9,28 @@ export async function PUT(
 		const { id } = await params
 		const formattedId = `${id.padStart(3, '0')}`
 		const editedUser: EditedUser = await req.json()
-		const { rows: users } = await pool.query<User>('SELECT * FROM public.users')
-		const isUserExist = users.find((user) => user.id === formattedId)
+		console.log('formattedId: ', formattedId)
+		const user = await getUserById(formattedId)
 
-		if (!isUserExist) {
+		if (!user) {
 			return Response.json({ error: 'User not found' }, { status: 404 })
 		}
 
-		await pool.query(
-			'UPDATE public.users SET username = $1, password = $2, role = $3, balance = $4 WHERE id = $5',
-			[
-				editedUser.username,
-				editedUser.password,
-				editedUser.role,
-				editedUser.balance,
-				formattedId,
-			]
+		console.log('edited user[id] ', user[0])
+		await editUser(
+			formattedId,
+			editedUser.username,
+			editedUser.password,
+			editedUser.role,
+			+editedUser.balance
 		)
+
 		return Response.json(
-			{ message: 'User edited succesfully' },
+			{ message: `User ${formattedId} edited succesfully` },
 			{ status: 200 }
 		)
 	} catch (error) {
-		console.error('Błąd DELETE:', error)
+		console.error('Error PUT:', error)
 		return Response.json({ error: 'Internal server error' }, { status: 500 })
 	}
 }

@@ -1,6 +1,4 @@
-import { pool } from '@/app/lib/db'
-import { Car } from '@/app/types/types'
-
+import { deleteCar, getCarById } from '@/app/lib/prismaActions'
 
 export async function GET(
 	req: Request,
@@ -8,16 +6,15 @@ export async function GET(
 ) {
 	try {
 		const { id } = await params
-		const formattedId = `${id.padStart(3, '0')}`
-		const result = await pool.query<Car>('SELECT * FROM cars WHERE id = $1', [
-			formattedId,
-		])
-		if (result.rows.length < 1) {
+		const formattedId = `car${id.padStart(3, '0')}`
+		const car = await getCarById(formattedId)
+		console.log('single car', car)
+		if (car.length === 0) {
 			return Response.json({ error: 'Car not found' }, { status: 404 })
 		}
-		return Response.json({ data: result.rows }, { status: 200 })
+		return Response.json({ data: car }, { status: 200 })
 	} catch (error) {
-		console.error('Błąd:', error)
+		console.error('Error:', error)
 		return Response.json({ error }, { status: 500 })
 	}
 }
@@ -28,19 +25,19 @@ export async function DELETE(
 ) {
 	try {
 		const { id } = await params
-		const formattedId = `${id.padStart(3, '0')}`
-		const { rows: cars } = await pool.query<Car>(
-			'SELECT * FROM cars WHERE id = $1',
-			[formattedId]
-		)
-		if (cars.length === 0) {
+		const formattedId = `car${id.padStart(3, '0')}`
+		const car = await getCarById(formattedId)
+		if (!car) {
 			return Response.json({ error: 'Car not found' }, { status: 404 })
 		}
 
-		await pool.query<Car>('DELETE FROM cars WHERE id = $1', [formattedId])
-		return Response.json({ data: 'delete succesfully' }, { status: 200 })
+		await deleteCar(formattedId)
+		return Response.json(
+			{ data: `Delete succesfully = ${formattedId}` },
+			{ status: 200 }
+		)
 	} catch (error) {
-		console.error('Błąd DELETE:', error)
+		console.error('Error DELETE:', error)
 		return Response.json({ error: 'Internal server error' }, { status: 500 })
 	}
 }

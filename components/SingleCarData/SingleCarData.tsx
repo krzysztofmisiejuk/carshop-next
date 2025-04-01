@@ -18,7 +18,7 @@ export default function SingleCarData(props: { car: Car }) {
 			/>
 			<SingleProperty
 				property='Właściciel'
-				value={props.car.owner_id}
+				value={props.car.ownerId}
 			/>
 		</li>
 	)

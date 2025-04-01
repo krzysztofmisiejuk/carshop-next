@@ -28,7 +28,7 @@ export type Car = {
 	id: string
 	model: string
 	price: number
-	owner_id: string
+	ownerId: string
 }
 
 export type NewCar = {

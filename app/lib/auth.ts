@@ -2,7 +2,8 @@ import crypto from 'crypto'
 import { NextRequest } from 'next/server'
 import dotenv from 'dotenv'
 import { User } from '../types/types'
-import { pool } from '@/app/lib/db'
+import { getUserById } from './prismaActions'
+
 dotenv.config()
 
 const IV_LENGTH = 16
@@ -47,11 +48,8 @@ export const getAuthenticatedUser = async (
 		const token = req.cookies.get('token')?.value || ''
 		const userId = getUserFromToken(token)
 		if (!userId) return null
-		const { rows } = await pool.query<User>(
-			'SELECT * FROM public.users WHERE id = $1',
-			[userId]
-		)
-		return rows[0] || null
+		const user = await getUserById(userId)
+		return user[0] 
 	} catch (error) {
 		console.error('Error in getAuthenticatedUser:', error)
 		return null

@@ -17,6 +17,7 @@ export default function BuyCarPanel() {
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({ carId: carId }),
 					credentials: 'include',
+					cache: 'no-store',
 				}
 			)
 

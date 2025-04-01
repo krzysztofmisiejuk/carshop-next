@@ -1,7 +1,6 @@
 import { cookies } from 'next/headers'
 import { getUserFromToken } from '@/app/lib/auth'
-import { pool } from '@/app/lib/db'
-import { User } from '@/app/types/types'
+import { getUserById, hackUser } from '@/app/lib/prismaActions'
 
 export async function GET(
 	req: Request,
@@ -16,6 +15,10 @@ export async function GET(
 		}
 		const decryptedUserId = getUserFromToken(token?.value)
 
+		if (!decryptedUserId) {
+			return Response.json({ error: 'User is not logged in' }, { status: 401 })
+		}
+
 		if (!bonus) {
 			return Response.json(
 				{ error: 'You have to provide an amount to hack!' },
@@ -23,19 +26,21 @@ export async function GET(
 			)
 		}
 
-		const { rows: user } = await pool.query<User>(
-			'SELECT * FROM users WHERE id = $1',
-			[decryptedUserId]
-		)
-		const amount = +bonus + +user[0].balance
+		const user = await getUserById(decryptedUserId)
 
-		await pool.query<User>('UPDATE users SET balance=$1 WHERE id = $2', [
-			amount,
-			user[0].id,
-		])
-		return Response.json({ message: 'User balance hacked!' }, { status: 200 })
+		if (!user) {
+			return Response.json({ error: 'User not found' }, { status: 404 })
+		}
+
+		const hackedBalance = +bonus + user[0].balance
+		await hackUser(decryptedUserId, hackedBalance)
+
+		return Response.json(
+			{ message: `${decryptedUserId} balance hacked!` },
+			{ status: 200 }
+		)
 	} catch (error) {
-		console.error('Błąd:', error)
+		console.error('Error HACK:', error)
 		return Response.json({ error: 'Internal server error' }, { status: 500 })
 	}
 }

@@ -1,14 +1,20 @@
-import { pool } from '@/app/lib/db'
-import { NewUser, User } from '@/app/types/types'
+import { NewUser } from '@/app/types/types'
+import { generateUserId } from '@/app/lib/generateCustomId'
+import { getUsers } from '@/app/lib/actions'
+import { createUser } from '@/app/lib/prismaActions'
 
 export async function POST(req: Request) {
 	try {
-		const { rows: users } = await pool.query<User>('SELECT * FROM public.users')
+		const users = await getUsers()
 		const newUser: NewUser = await req.json()
-		const isUserExist = users.find((user) => user.username === newUser.username)
+		const newId = await generateUserId()
+		const isUserExist = users?.data.find(
+			(user) => user.username === newUser.username
+		)
+
 		if (!newUser.password || !newUser.username) {
 			return Response.json(
-				{ message: 'username and password are required' },
+				{ message: 'Username and password are required' },
 				{ status: 400 }
 			)
 		}
@@ -16,16 +22,14 @@ export async function POST(req: Request) {
 		if (isUserExist) {
 			return Response.json({ error: 'User already exists' }, { status: 409 })
 		}
-		await pool.query(
-			'INSERT INTO public.users (username, password, role, balance) VALUES ($1, $2, $3, $4)',
-			[newUser.username, newUser.password, 'user', 2000]
-		)
+
+		await createUser(newId, newUser.password, newUser.username)
 		return Response.json(
-			{ message: 'The registration was successfully' },
+			{ message: `The registration was successfully - ${newId}` },
 			{ status: 201 }
 		)
 	} catch (error) {
-		console.error('Błąd:', error)
+		console.error('Error register: ', error)
 		return Response.json({ error: 'Internal server error' }, { status: 500 })
 	}
 }

@@ -12,7 +12,7 @@ export default async function Cars() {
 			</section>
 		)
 	}
-
+	console.log('carslist page cars: ', carsList)
 	return (
 		<section>
 			<PageHeader headerContent='Samochody' />

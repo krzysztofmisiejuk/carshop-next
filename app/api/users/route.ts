@@ -1,12 +1,14 @@
-import { pool } from '@/app/lib/db'
-import { User } from '@/app/types/types'
+import { getUsers } from '@/app/lib/prismaActions'
 
 export async function GET() {
 	try {
-		const result = await pool.query<User>('SELECT * FROM users')
-		return Response.json({ data: result.rows }, { status: 200 })
+		const users = await getUsers()
+		if (!users) {
+			return Response.json({ error: 'Users not found' }, { status: 404 })
+		}
+		return Response.json({ data: users }, { status: 200 })
 	} catch (error) {
-		console.error('Błąd:', error)
+		console.error('Error:', error)
 		return Response.json({ error }, { status: 500 })
 	}
 }
