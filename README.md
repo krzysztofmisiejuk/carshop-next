@@ -11,4 +11,4 @@ Branch no-context:
 - there are CustomLink components instead next/links - cache avoid in client side
 
 Branch prisma-code:
-- extend no-context branch with use prisma ORM for db conection
+- extend no-context branch with use prisma ORM for db connection
