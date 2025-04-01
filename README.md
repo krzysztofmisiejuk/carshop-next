@@ -9,3 +9,6 @@ Branch no-context:
 - use revalidatePath fn in API and use routers from next/navigation for refreshing cache
 - there are not Messages components, compare to branch homework (avoid using hooks)  
 - there are CustomLink components instead next/links - cache avoid in client side
+
+Branch prisma-code:
+- extend no-context branch with use prisma ORM for db conection
