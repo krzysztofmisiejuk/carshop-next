@@ -33,3 +33,23 @@ price Int
 ownerId String?
 userId User? @relation(fields: [ownerId], references:[id])
 }
+
+model Chat {
+  id        Int       @id @default(autoincrement())
+  userEmail String
+  name      String
+  timestamp DateTime  @default(now())
+  messages  Message[]
+
+  @@map("chats")
+}
+
+model Message {
+  id      Int    @id @default(autoincrement())
+  chatId  Int
+  role    String @db.VarChar(32)
+  content String
+  chat    Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
+
+  @@map("messages")
+}
