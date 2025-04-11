@@ -11,7 +11,7 @@ export default function InfoPanel({
 	setIsEditMode: React.Dispatch<React.SetStateAction<boolean>>
 }) {
 	return (
-		<div className='flex items-center'>
+		<div className='flex items-center flex-wrap gap-2'>
 			<CustomButton
 				type='button'
 				text='Edytuj'
@@ -26,7 +26,11 @@ export default function InfoPanel({
 				value={`${user.username}`}
 			/>
 			<SingleProperty
-				property='Pasword'
+				property='Email'
+				value={`${user.email}`}
+			/>
+			<SingleProperty
+				property='Password'
 				value={`${user.password}`}
 			/>
 			<SingleProperty

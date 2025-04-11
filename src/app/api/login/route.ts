@@ -1,8 +1,9 @@
-import { generateToken } from '@/lib/auth'
+// import { generateToken } from '@/lib/auth'
+import { createSession } from '@/lib/jwt'
 import { getUserByUsername } from '@/lib/prismaActions'
 import { NewUser } from '@/types/types'
 import { revalidatePath } from 'next/cache'
-import { cookies } from 'next/headers'
+// import { cookies } from 'next/headers'
 
 
 export async function POST(req: Request) {
@@ -24,21 +25,7 @@ export async function POST(req: Request) {
 			)
 		}
 
-		const token = generateToken(JSON.stringify(user.id))
-		if (!token) {
-			return Response.json(
-				{ error: 'Error generating token', data: user },
-				{ status: 500 }
-			)
-		}
-
-		const cookieStore = await cookies()
-		cookieStore.set('token', token, {
-			httpOnly: true,
-			maxAge: 3600,
-			path: '/',
-			sameSite: 'lax',
-		})
+		await createSession(user.id)
 
 		revalidatePath('/')
 		return Response.json(

@@ -1,6 +1,5 @@
-import { AddCarForm, PageHeader, SingleCarData } from "@/components"
-import { getCars } from "@/lib/prismaActions"
-
+import { AddCarForm, PageHeader, SingleCarData } from '@/components'
+import { getCars } from '@/lib/prismaActions'
 
 export default async function Cars() {
 	const carsList = await getCars()
@@ -21,7 +20,6 @@ export default async function Cars() {
 				{carsList.length > 0 ? (
 					carsList.map((car) => (
 						<SingleCarData
-
 							key={car.id}
 							car={car}
 						/>

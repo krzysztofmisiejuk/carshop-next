@@ -18,14 +18,15 @@ export default async function RootTemplate({
 	const session = await getServerSession(authOptions)
 	const loggedUserId = session?.user.id
 	const user = loggedUserId ? await getUserById(loggedUserId) : null
+
 	return (
 		<SessionProviderWrapper>
 			<MessageProvider>
 				<div className='flex flex-col min-h-svh'>
-					<Header dataUser={user} />
+					<Header dataUser={user ? user[0] : null} />
 					<Notification />
 					<Message />
-					<main className='flex flex-col flex-1  w-full  p-5 mt-5 rounded bg-white'>
+					<main className='flex flex-col flex-1 w-full p-5 mt-5 rounded bg-white'>
 						{children}
 					</main>
 					<Footer />

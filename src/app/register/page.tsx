@@ -6,6 +6,7 @@ import { CustomButton, Form, CustomInput, PageHeader } from '@/components'
 
 export default function Register() {
 	const [username, setUsername] = useState('')
+	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [, setMessage] = useContext(MessageContext)
 	const router = useRouter()
@@ -16,7 +17,7 @@ export default function Register() {
 			const response = await fetch('http://localhost:3000/api/register', {
 				method: 'POST',
 				headers: { 'Content-type': 'application/json' },
-				body: JSON.stringify({ username, password }),
+				body: JSON.stringify({ username, email, password }),
 			})
 			const data = await response.json()
 			if (response.ok) {
@@ -38,6 +39,11 @@ export default function Register() {
 					id='register_username'
 					placeholder='Username'
 					onChange={setUsername}
+				/>
+				<CustomInput
+					id='register_email'
+					placeholder='Email'
+					onChange={setEmail}
 				/>
 				<CustomInput
 					id='register_password'

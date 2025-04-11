@@ -3,13 +3,9 @@ import CustomLink from '../CustomLink/CustomLink'
 import { signOut } from 'next-auth/react'
 import { useContext } from 'react'
 import { MessageContext } from '@/contexts/MessageContext'
-import { User } from '@prisma/client'
+import { User } from '@/types/types'
 
-export default function NavLoginList({
-	dataUser,
-}: {
-	dataUser: User[] | null
-}) {
+export default function NavLoginList({ dataUser }: { dataUser: User }) {
 	const [, setMessage] = useContext(MessageContext)
 
 	async function handleLogout() {
@@ -32,18 +28,15 @@ export default function NavLoginList({
 				<li>Kup samochód</li>
 			</CustomLink>
 			<li>
-				<button
-					className='cursor-pointer'
-					onClick={() => handleLogout()}
-				>
+				<button className='cursor-pointer' onClick={handleLogout}>
 					Wyloguj
 				</button>
 			</li>
-			{dataUser && dataUser[0]?.role === 'admin' ? (
+			{dataUser?.role === 'admin' && (
 				<div className='ml-auto'>
 					<CustomLink pathname='/edit'>Lista użytkowników</CustomLink>
 				</div>
-			) : null}
+			)}
 		</div>
 	)
 }

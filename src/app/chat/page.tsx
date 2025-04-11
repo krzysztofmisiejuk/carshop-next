@@ -35,7 +35,7 @@ export default function Chat() {
 		<div className='flex flex-col items-center w-full flex-1 '>
 			<PageHeader headerContent='Porozmawiaj z naszym wirtualnym sprzedawcą' />
 			<div className='flex flex-col items-center w-full max-w-[1920px]  flex-1 border-t-2 '>
-				<div className='flex flex-col w-full border-b-2 overflow-y-auto max-h-[calc(100vh-350px)] px-4'>
+				<div className='flex flex-col w-full border-b-2 min-h-[calc(60vh)] overflow-y-auto  px-4'>
 					{messages.map((msg, i) => (
 						<div
 							key={i}

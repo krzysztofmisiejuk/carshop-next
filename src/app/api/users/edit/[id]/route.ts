@@ -1,7 +1,6 @@
 import { editUser, getUserById } from "@/lib/prismaActions"
 import { EditedUser } from "@/types/types"
 
-
 export async function PUT(
 	req: Request,
 	{ params }: { params: Promise<{ id: string }> }
@@ -20,6 +19,7 @@ export async function PUT(
 			formattedId,
 			editedUser.username,
 			editedUser.password,
+			editedUser.email,
 			editedUser.role,
 			+editedUser.balance
 		)

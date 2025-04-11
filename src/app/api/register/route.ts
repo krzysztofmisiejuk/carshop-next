@@ -20,7 +20,7 @@ export async function POST(req: Request) {
 			return Response.json({ error: 'User already exists' }, { status: 409 })
 		}
 
-		await createUser(newId, newUser.password, 'user', newUser.username)
+		await createUser(newId, newUser.username, newUser.email, newUser.password, 'user')
 		return Response.json(
 			{ message: `The registration was successfully - ${newId}` },
 			{ status: 201 }

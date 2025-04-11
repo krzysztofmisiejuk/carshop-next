@@ -1,30 +1,13 @@
-import { User } from '@prisma/client'
-import { getServerSession } from 'next-auth'
+import { User } from '@/types/types'
 
-export default async function NavInfo({
-	dataUser,
-}: {
-	dataUser: User[] | null
-}) {
-	const session = await getServerSession()
-
+export default async function NavInfo({ dataUser }: { dataUser: User | null }) {
 	if (!dataUser) {
 		return <p className='text-sm mt-1'>Nie jesteś zalogowany</p>
 	}
 
-	if (dataUser?.length === 0 && session) {
-		const { user } = session
-		return (
-			<p className='text-sm mt-1'>
-				{`Zalogowany jako: ${user.name} | Rola: user | Saldo: brak danych `}
-			</p>
-		)
-	}
-
 	return (
 		<p className='text-sm mt-1'>
-			{`Zalogowany jako: ${dataUser[0]?.username} | Rola: ${dataUser[0]?.role} | Saldo:
-			${dataUser[0]?.balance}`}
+			{`Zalogowany jako: ${dataUser.username} | Rola: ${dataUser.role} | Saldo: ${dataUser.balance}`}
 		</p>
 	)
 }

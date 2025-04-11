@@ -11,13 +11,15 @@ export async function getCars() {
 export async function createUser(
 	newId: string,
 	newUsername: string,
-	newRole: "admin" | "user" = "user",
-	newPassword: string
+	newEmail: string,
+	newPassword: string,
+	newRole: 'admin' | 'user' = 'user'
 ) {
 	return await prisma.user.create({
 		data: {
 			id: newId,
 			username: newUsername,
+			email: newEmail,
 			password: newPassword,
 			role: newRole,
 			balance: 5000,
@@ -75,6 +77,7 @@ export async function editUser(
 	userId: string,
 	editedUsername: string,
 	editedPassword: string,
+	editedEmail?: string,
 	editedRole?: 'user' | 'admin',
 	newBalance?: number
 ) {
@@ -82,6 +85,7 @@ export async function editUser(
 		data: {
 			username: editedUsername,
 			password: editedPassword,
+			email: editedEmail,
 			role: editedRole,
 			balance: newBalance,
 		},
@@ -128,17 +132,17 @@ export async function hackUser(userId: string, hackedBalance: number) {
 // 		},
 // 	  },
 // 	});
-  
+
 // 	return chat.id;
 //   }
-  
+
 //   export async function getChats(userEmail: string): Promise<Chat[]> {
 // 	const chats = await prisma.chat.findMany({
 // 	  where: { userEmail },
 // 	});
 // 	return chats;
 //   }
-  
+
 //   export async function getChat(
 // 	chatId: number
 //   ): Promise<ChatWithMessages | null> {
@@ -146,10 +150,10 @@ export async function hackUser(userId: string, hackedBalance: number) {
 // 	  where: { id: chatId },
 // 	  include: { messages: true },
 // 	});
-  
+
 // 	return chat as ChatWithMessages;
 //   }
-  
+
 //   export async function getChatsWithMessages(
 // 	userEmail: string
 //   ): Promise<ChatWithMessages[]> {
@@ -159,24 +163,24 @@ export async function hackUser(userId: string, hackedBalance: number) {
 // 	  orderBy: { timestamp: "desc" },
 // 	  take: 3,
 // 	});
-  
+
 // 	return chatsWithMessages as ChatWithMessages[];
 //   }
-  
+
 //   export async function getMessages(chatId: number): Promise<Message[]> {
 // 	const messages = await prisma.message.findMany({
 // 	  where: { chatId },
 // 	});
-  
+
 // 	return messages as Message[];
 //   }
-  
+
 //   export async function updateChat(
 // 	chatId: number,
 // 	msgs: { role: string; content: string }[]
 //   ) {
 // 	await prisma.message.deleteMany({ where: { chatId } });
-  
+
 // 	await prisma.message.createMany({
 // 	  data: msgs.map((msg) => ({
 // 		chatId,

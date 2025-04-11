@@ -1,6 +1,7 @@
-import { generateCarId } from "@/lib/generateCustomId"
-import { createCar, getCarByModel, getCars } from "@/lib/prismaActions"
-import { NewCar } from "@/types/types"
+import { generateCarId } from '@/lib/generateCustomId'
+import { createCar, getCarByModel, getCars } from '@/lib/prismaActions'
+import { NewCar } from '@/types/types'
+import { revalidatePath } from 'next/cache'
 
 export async function GET() {
 	try {
@@ -31,7 +32,7 @@ export async function POST(req: Request) {
 		if (isCarExist) {
 			return Response.json({ error: 'Car already exists' }, { status: 409 })
 		}
-
+		revalidatePath("/cars")
 		await createCar(newCarId, newCar.model, +newCar.price)
 		return Response.json(
 			{ message: `Added new car! - ${newCarId}` },

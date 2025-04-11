@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction } from 'react'
 export type User = {
 	id: string
 	username: string
+	email?: string
 	password: string
 	role: 'admin' | 'user'
 	balance: number
@@ -10,6 +11,7 @@ export type User = {
 
 export type NewUser = {
 	username: string
+	email: string
 	password: string
 }
 
@@ -22,6 +24,7 @@ export type EditedCurrentUser = {
 export type EditedUser = {
 	username: string
 	password: string
+	email: string
 	balance: number
 	role: 'user' | 'admin'
 }
