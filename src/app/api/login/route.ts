@@ -1,10 +1,7 @@
-// import { generateToken } from '@/lib/auth'
 import { createSession } from '@/lib/jwt'
 import { getUserByUsername } from '@/lib/prismaActions'
 import { NewUser } from '@/types/types'
 import { revalidatePath } from 'next/cache'
-// import { cookies } from 'next/headers'
-
 
 export async function POST(req: Request) {
 	try {
